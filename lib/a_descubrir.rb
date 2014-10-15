@@ -18,6 +18,14 @@ class ADescubrir
     self.mensajes[selector]
   end
 
+  def self.que_clases_se_me_parecen
+    if mensajes_recibidos.empty?
+      []
+    else
+      ObjectSpace.each_object(Class).select { |clazz| Set.new(mensajes_recibidos).subset? Set.new(clazz.instance_methods) }
+    end
+  end
+
   def method_missing(selector, *argumentos)
     self.class.mensajes[selector] = self.class.mensajes[selector] + 1
   end

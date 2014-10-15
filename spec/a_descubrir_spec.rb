@@ -1,6 +1,6 @@
 require_relative '../lib/a_descubrir'
 
-RSpec.describe "ADescubrir" do
+RSpec.describe "Un descendiente de ADescubrir" do
   before(:each) do
     Perro = Class.new(ADescubrir)
     Gato = Class.new(ADescubrir)
@@ -32,5 +32,17 @@ RSpec.describe "ADescubrir" do
 
     expect(Perro.cuantas_veces_recibiste(:ladrar)).to eq(3)
     expect(Perro.cuantas_veces_recibiste(:correr)).to eq(0)
+  end
+
+  it "si no se le envian mensajes, no se parece a ninguna clase" do
+    expect(Perro.que_clases_se_me_parecen).to be_empty
+  end
+
+  it "si se le envian mensajes, sabe que clases se le parecen" do
+    cuchuflito = Perro.new
+    cuchuflito.size
+    cuchuflito.upcase
+
+    expect(Perro.que_clases_se_me_parecen).to include(String)
   end
 end
