@@ -70,4 +70,22 @@ RSpec.describe "Un descendiente de ADescubrir" do
       expect(Gato.new.ladrar).not_to be_a(String)
     end
   end
+
+  it "puede crear metodos para mensajes faltantes en todos los descendientes" do
+    lassie = Perro.new
+    lassie.correr
+    lassie.correr
+    lassie.correr
+
+    Salchicha = Class.new(Perro)
+    pancho = Salchicha.new
+    pancho.poneteKetchup
+    pancho.poneteKetchup
+    pancho.poneteKetchup
+
+    Perro.crear_metodos_para_mensajes_faltantes_con_descendientes(3)
+
+    expect(lassie.correr).to eq("Soy un Perro y me estan enviando el mensaje correr")
+    expect(pancho.poneteKetchup).to eq("Soy un Salchicha y me estan enviando el mensaje poneteKetchup")
+  end
 end

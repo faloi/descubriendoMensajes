@@ -6,8 +6,8 @@ class ADescubrir
   end
 
   def self.inherited(subclass)
-    subclass.mensajes = Hash.new
-    subclass.mensajes.default = 0
+      subclass.mensajes = Hash.new
+      subclass.mensajes.default = 0
   end
 
   def self.mensajes_recibidos
@@ -30,6 +30,14 @@ class ADescubrir
     mensajes_recibidos
       .select { |mensaje| cuantas_veces_recibiste(mensaje) >= cantidad_minima }
       .each { |mensaje| crear_metodo_para(mensaje) }
+  end
+
+  def self.crear_metodos_para_mensajes_faltantes_con_descendientes(cantidad_minima)
+    descendientes.each { |clazz| clazz.crear_metodos_para_mensajes_faltantes(cantidad_minima) }
+  end
+
+  def self.descendientes
+    ObjectSpace.each_object(Class).select { |clazz| clazz.ancestors.include? self }
   end
 
   def self.crear_metodo_para(selector)
