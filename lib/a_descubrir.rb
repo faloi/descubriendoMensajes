@@ -26,6 +26,18 @@ class ADescubrir
     end
   end
 
+  def self.crear_metodos_para_mensajes_faltantes(cantidad_minima)
+    mensajes_recibidos
+      .select { |mensaje| cuantas_veces_recibiste(mensaje) >= cantidad_minima }
+      .each { |mensaje| crear_metodo_para(mensaje) }
+  end
+
+  def self.crear_metodo_para(selector)
+    define_method(selector) do
+      "Soy un #{self.class.name} y me estan enviando el mensaje #{selector}"
+    end
+  end
+
   def method_missing(selector, *argumentos)
     self.class.mensajes[selector] = self.class.mensajes[selector] + 1
   end

@@ -45,4 +45,29 @@ RSpec.describe "Un descendiente de ADescubrir" do
 
     expect(Perro.que_clases_se_me_parecen).to include(String)
   end
+
+  describe "puede crear metodos para mensajes faltantes" do
+    before(:each) do
+      @lassie = Perro.new
+      toby = Perro.new
+      @lassie.ladrar
+      toby.ladrar
+      toby.ladrar
+      @lassie.correr
+
+      Perro.crear_metodos_para_mensajes_faltantes(2)
+    end
+
+    it "con una implementacion dummy" do
+      expect(@lassie.ladrar).to eq("Soy un Perro y me estan enviando el mensaje ladrar")
+    end
+
+    it "solo para los que se llamaron al menos n veces" do
+      expect(@lassie.correr).not_to be_a(String)
+    end
+
+    it "solo para la clase en cuestion" do
+      expect(Gato.new.ladrar).not_to be_a(String)
+    end
+  end
 end
