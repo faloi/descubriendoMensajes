@@ -71,21 +71,37 @@ RSpec.describe "Un descendiente de ADescubrir" do
     end
   end
 
-  it "puede crear metodos para mensajes faltantes en todos los descendientes" do
-    lassie = Perro.new
-    lassie.correr
-    lassie.correr
-    lassie.correr
+  describe "puede crear metodos para mensajes faltantes en todos los descendientes" do
+    before(:each) do
+      @lassie = Perro.new
+      @lassie.correr
+      @lassie.correr
+      @lassie.correr
+    end
 
-    Salchicha = Class.new(Perro)
-    pancho = Salchicha.new
-    pancho.poneteKetchup
-    pancho.poneteKetchup
-    pancho.poneteKetchup
+    it "partiendo de cualquier descendiente de ADescubrir" do
+      Salchicha = Class.new(Perro)
+      pancho = Salchicha.new
+      pancho.poneteKetchup
+      pancho.poneteKetchup
+      pancho.poneteKetchup
 
-    Perro.crear_metodos_para_mensajes_faltantes_con_descendientes(3)
+      Perro.crear_metodos_para_mensajes_faltantes_con_descendientes(3)
 
-    expect(lassie.correr).to eq("Soy un Perro y me estan enviando el mensaje correr")
-    expect(pancho.poneteKetchup).to eq("Soy un Salchicha y me estan enviando el mensaje poneteKetchup")
+      expect(@lassie.correr).to eq("Soy un Perro y me estan enviando el mensaje correr")
+      expect(pancho.poneteKetchup).to eq("Soy un Salchicha y me estan enviando el mensaje poneteKetchup")
+    end
+
+    it "partiendo de ADescubrir" do
+      garfield = Gato.new
+      garfield.maullar
+      garfield.maullar
+      garfield.maullar
+
+      ADescubrir.crear_metodos_para_mensajes_faltantes_con_descendientes(3)
+
+      expect(@lassie.correr).to eq("Soy un Perro y me estan enviando el mensaje correr")
+      expect(garfield.maullar).to eq("Soy un Gato y me estan enviando el mensaje maullar")
+    end
   end
 end

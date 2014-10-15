@@ -5,17 +5,23 @@ class ADescubrir
     attr_accessor :mensajes
   end
 
+  def self.init(subclass)
+    subclass.mensajes = Hash.new
+    subclass.mensajes.default = 0
+  end
+
+  self.init(self)
+
   def self.inherited(subclass)
-      subclass.mensajes = Hash.new
-      subclass.mensajes.default = 0
+    init(subclass)
   end
 
   def self.mensajes_recibidos
-    self.mensajes.keys
+    mensajes.keys
   end
 
   def self.cuantas_veces_recibiste(selector)
-    self.mensajes[selector]
+    mensajes[selector]
   end
 
   def self.que_clases_se_me_parecen
