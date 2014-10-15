@@ -104,4 +104,27 @@ RSpec.describe "Un descendiente de ADescubrir" do
       expect(garfield.maullar).to eq("Soy un Gato y me estan enviando el mensaje maullar")
     end
   end
+
+  it "puede exportar el codigo fuente con las implementaciones dummies" do
+    lassie = Perro.new
+    toby = Perro.new
+    lassie.ladrar
+    toby.ladrar
+    toby.ladrar
+    lassie.correr
+    lassie.correr
+
+    fuentePerro = "/home/faloi/Desktop/Perro.rb"
+    Perro.exportar_codigo_fuente_con_implementaciones(fuentePerro, 2)
+    expect(File.read(fuentePerro)).to eq(
+"""class Perro
+  def ladrar
+    \"Soy un Perro y me estan enviando el mensaje ladrar\"
+  end
+
+  def correr
+    \"Soy un Perro y me estan enviando el mensaje correr\"
+  end
+end""")
+  end
 end

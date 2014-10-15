@@ -33,9 +33,11 @@ class ADescubrir
   end
 
   def self.crear_metodos_para_mensajes_faltantes(cantidad_minima)
-    mensajes_recibidos
-      .select { |mensaje| cuantas_veces_recibiste(mensaje) >= cantidad_minima }
-      .each { |mensaje| crear_metodo_para(mensaje) }
+    mensajes_recibidos_al_menos(cantidad_minima).each { |mensaje| crear_metodo_para(mensaje) }
+  end
+
+  def self.mensajes_recibidos_al_menos(cantidad_minima)
+    mensajes_recibidos.select { |mensaje| cuantas_veces_recibiste(mensaje) >= cantidad_minima }
   end
 
   def self.crear_metodos_para_mensajes_faltantes_con_descendientes(cantidad_minima)
@@ -50,6 +52,22 @@ class ADescubrir
     define_method(selector) do
       "Soy un #{self.class.name} y me estan enviando el mensaje #{selector}"
     end
+  end
+
+  def self.exportar_codigo_fuente_con_implementaciones(filename, cantidad_minima)
+    File.open(filename, 'w') { |file| file.write(codigo_fuente_con_implementaciones(cantidad_minima)) }
+  end
+
+  def self.codigo_fuente_con_implementaciones(cantidad_minima)
+    metodos = mensajes_recibidos_al_menos(cantidad_minima).collect { |mensaje|
+"""  def #{mensaje}
+    \"Soy un #{self} y me estan enviando el mensaje #{mensaje}\"
+  end"""
+    }
+
+    """class #{self}
+#{metodos.join "\n\n"}
+end"""
   end
 
   def method_missing(selector, *argumentos)
